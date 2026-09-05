@@ -44,7 +44,9 @@ declarative_weather_etl/
 │   │   └── valid_forecast.yaml
 │   ├── conftest.py
 │   ├── test_api.py
-│   └── test_cli.py
+│   ├── test_api_client.py
+│   ├── test_cli.py
+│   └── test_duckdb.py
 ├── .gitignore
 ├── __init__.py                  # Package root initializer
 ├── api_client.py                # Weather API HTTP request handler with dynamic routing
@@ -171,25 +173,81 @@ declarative_weather_etl/
 
 * **`config_paths()`**
 * **Definition**: `@pytest.fixture def config_paths() -> dict[str, Path]`
-* **Description**: Pytest fixture providing file paths to YAML test fixtures (`valid_archive.yaml`, `valid_forecast.yaml`, `invalid_schema.yaml`).
+* **Description**: Fixture providing paths to valid and invalid YAML test configurations.
+
+
+* **`sample_config()`**
+* **Definition**: `@pytest.fixture def sample_config()`
+* **Description**: Provides a `MagicMock` config populated with required `database`, `execution`, and `metrics` attributes for DuckDB tests.
+
+
+* **`mock_open_meteo_payload()`**
+* **Definition**: `@pytest.fixture def mock_open_meteo_payload() -> Dict[str, Any]`
+* **Description**: Provides a deterministic Open-Meteo API response payload.
+
+
+* **`mock_api_client()`**
+* **Definition**: `@pytest.fixture(autouse=True) def mock_api_client(request, mock_open_meteo_payload)`
+* **Description**: Automatically mocks external API calls for integration tests while allowing `test_api_client.py` unit tests to run independently.
+
+
 
 #### `tests/test_api.py`
 
 * **`test_weather_pipeline_execution()`**
 * **Definition**: `@pytest.mark.parametrize(...) def test_weather_pipeline_execution(...)`
 * **Description**: Tests pipeline instantiation, record extraction, and DuckDB loading across valid YAML test configs.
+
+
 * **`test_run_pipeline_functional_api()`**
 * **Definition**: `def test_run_pipeline_functional_api(tmp_path: Path)`
 * **Description**: Validates the functional programmatic wrapper `run_pipeline()`.
+
+
 * **`test_invalid_yaml_schema_raises_validation_error()`**
 * **Definition**: `def test_invalid_yaml_schema_raises_validation_error()`
 * **Description**: Asserts that malformed configuration files fail early during validation.
+
+
+
+#### `tests/test_api_client.py`
+
+* **`test_normalize_date_variants()`**
+* **Definition**: `def test_normalize_date_variants(self)`
+* **Description**: Validates date normalization across `str`, `date`, and `datetime` types.
+
+
+* **`test_fetch_location_metrics_archive_endpoint()`**
+* **Definition**: `def test_fetch_location_metrics_archive_endpoint(self, mock_get)`
+* **Description**: Verifies HTTP call routing to the archive endpoint for historical date ranges.
+
+
+* **`test_fetch_location_metrics_forecast_endpoint()`**
+* **Definition**: `def test_fetch_location_metrics_forecast_endpoint(self, mock_get)`
+* **Description**: Verifies HTTP call routing to the forecast endpoint for future date ranges.
+
+
+* **`test_fetch_location_metrics_http_error_raises_runtime_error()`**
+* **Definition**: `def test_fetch_location_metrics_http_error_raises_runtime_error(self, mock_get)`
+* **Description**: Asserts that network exceptions during API requests raise appropriate runtime errors.
+
+
 
 #### `tests/test_cli.py`
 
 * **`test_cli_execution()`**
 * **Definition**: `def test_cli_execution()`
 * **Description**: Validates CLI entrypoint argument handling, process execution, and exit codes.
+
+
+
+#### `tests/test_duckdb.py`
+
+* **`test_duckdb_loader_export_to_csv()`**
+* **Definition**: `def test_duckdb_loader_export_to_csv(tmp_path: Path, sample_config)`
+* **Description**: Validates schema initialization, record batch ingestion, and CSV file export logic.
+
+
 
 ---
 

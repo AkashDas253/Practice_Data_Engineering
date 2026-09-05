@@ -1,0 +1,54 @@
+# ==============================================================================
+# Declarative Weather ETL Configuration Syntax & Reference
+# Repository: declarative-weather-etl
+# File: config.syntax.yaml
+# ==============================================================================
+
+version: "1.0"                         # [Required] Schema version identifier
+
+# ------------------------------------------------------------------------------
+# 1. Storage Target Configuration
+# ------------------------------------------------------------------------------
+database:
+  engine: "duckdb"                     # [Required] Target engine. Options: "duckdb", "sqlite"
+  filepath: "./data/research.duckdb"   # [Required] Path to DB file (parent directories auto-created)
+  table_name: "agtech_observations"    # [Required] SQL destination table name
+
+# ------------------------------------------------------------------------------
+# 2. Execution & Pipeline Controls
+# ------------------------------------------------------------------------------
+execution:
+  batch_size_days: 30                  # [Optional] Processing batch window in days (Default: 30, Min: 1, Max: 365)
+  export_csv_on_complete: true         # [Optional] Boolean toggle to dump a CSV export upon success
+  csv_output_path: "./exports/data.csv"# [Optional] Output file path for CSV export (parent directories auto-created)
+
+# ------------------------------------------------------------------------------
+# 3. Time Boundary (Dynamic Routing)
+# Router selects Archive API if end_date < today, else Forecast API
+# ------------------------------------------------------------------------------
+time_window:
+  start_date: "2023-01-01"             # [Required] Start date (YYYY-MM-DD)
+  end_date: "2026-01-01"               # [Required] End date (YYYY-MM-DD)
+
+# ------------------------------------------------------------------------------
+# 4. Location Registry
+# ------------------------------------------------------------------------------
+locations:
+  - id: "central_valley_farm"          # [Required] Unique string identifier for location
+    latitude: 36.7783                  # [Required] Latitude coordinate (-90.0 to 90.0)
+    longitude: -119.4179               # [Required] Longitude coordinate (-180.0 to 180.0)
+
+  - id: "rotterdam_port"
+    latitude: 51.9244
+    longitude: 4.4777
+
+# ------------------------------------------------------------------------------
+# 5. Requested Metric Aliases
+# Internal mapper resolves these aliases to API parameters and SQL datatypes
+# ------------------------------------------------------------------------------
+requested_metrics:
+  - "air_temp"                         # Maps to temperature_2m (DuckDB: DOUBLE)
+  - "humidity"                         # Maps to relative_humidity_2m (DuckDB: INTEGER)
+  - "precipitation"                    # Maps to precipitation (DuckDB: DOUBLE)
+  - "soil_moisture"                    # Maps to soil_moisture_0_to_7cm (DuckDB: DOUBLE)
+  - "wind_speed"                       # Maps to wind_speed_10m (DuckDB: DOUBLE)

@@ -1,0 +1,38 @@
+version: "1.0"
+
+# Target Storage Settings
+database:
+  engine: "duckdb"                          # Options: duckdb, sqlite
+  filepath: "./data/weather_research.duckdb" # Path to local DB file
+  table_name: "agtech_observations"         # Destination table name
+
+# Execution & Export Options
+execution:
+  batch_size_days: 30                       # Fetch data in 30-day chunks
+  export_csv_on_complete: true              # Automatically dump a CSV copy
+  csv_output_path: "./exports/agtech_data.csv"
+
+# Historical Date Boundary
+time_window:
+  start_date: "2023-01-01"
+  end_date: "2026-01-01"
+
+# Study Locations
+locations:
+  - id: "central_valley_farm"
+    latitude: 36.7783
+    longitude: -119.4179
+  - id: "rotterdam_port"
+    latitude: 51.9244
+    longitude: 4.4777
+  - id: "punjab_agri_zone"
+    latitude: 30.9010
+    longitude: 75.8573
+
+# Metrics to Ingest
+requested_metrics:
+  - "air_temp"
+  - "humidity"
+  - "precipitation"
+  - "soil_moisture"
+  - "wind_speed"

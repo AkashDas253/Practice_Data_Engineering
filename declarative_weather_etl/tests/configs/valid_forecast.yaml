@@ -1,0 +1,26 @@
+
+version: "1.0"
+
+database:
+  engine: "duckdb"
+  filepath: "./data/test_forecast.duckdb"
+  table_name: "test_forecast_observations"
+
+execution:
+  batch_size_days: 7
+  export_csv_on_complete: false
+  csv_output_path: "./exports/test_forecast.csv"
+
+time_window:
+  start_date: "2026-09-01"
+  end_date: "2026-09-07"
+
+locations:
+  - id: "rotterdam_port"
+    latitude: 51.9244
+    longitude: 4.4777
+
+requested_metrics:
+  - "air_temp"
+  - "wind_speed"
+  - "precipitation"

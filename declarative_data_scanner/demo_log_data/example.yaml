@@ -1,0 +1,26 @@
+scan:
+  discovery:
+    type: glob
+    config:
+      path: ./demo_log_data/logs/*.log
+
+  reader:
+    type: text
+    config:
+      encoding: utf-8
+
+  parser:
+    - type: regex
+      config:
+        pattern: '(?P<date>\S+)\s+(?P<level>\w+)\s+(?P<status_code>\d+)\s+(?P<method>\w+)\s+(?P<path>\S+)(?:\s+(?P<message>.*))?'
+
+  processing:
+    - type: filter
+      config:
+        field: level
+        equals: ERROR
+
+  output:
+    type: csv
+    config:
+      path: ./demo_log_data/output/errors.csv

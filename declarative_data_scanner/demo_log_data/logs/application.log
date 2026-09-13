@@ -1,0 +1,8 @@
+2026-09-13 INFO 200 GET /api/users
+2026-09-13 ERROR 500 GET /api/orders Database connection failed
+2026-09-13 INFO 200 POST /api/login
+2026-09-13 WARN 404 GET /api/products/999 Product not found
+2026-09-13 ERROR 503 GET /api/payments Payment service unavailable
+2026-09-13 INFO 201 POST /api/users User created
+2026-09-13 ERROR 400 POST /api/orders Invalid order payload
+2026-09-13 INFO 200 GET /api/health Health check passed

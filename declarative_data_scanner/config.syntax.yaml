@@ -1,0 +1,29 @@
+# Declarative Data Scanner configuration syntax
+
+scan:
+
+  discovery:
+    type: <component-type>
+    config:
+      path: <path-or-pattern>
+
+  reader:
+    type: <component-type>
+    config:
+      encoding: <encoding>
+
+  parser:
+    - type: <component-type>
+      config:
+        pattern: <parser-pattern>
+
+  processing:
+    - type: <component-type>
+      config:
+        field: <field-name>
+        equals: <value>
+
+  output:
+    type: <component-type>
+    config:
+      path: <output-path>

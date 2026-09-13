@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+MagicMoon/
+
+venv/
+.venv/
+.env
+
+data/
+exports/
+*.duckdb
+*.csv
+
+.vscode/
+.idea/

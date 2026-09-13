@@ -1,0 +1,10 @@
+scans:
+
+  application_logs:
+
+    source:
+      type: file
+      path: "./logs/*.log"
+
+    reader:
+      type: text

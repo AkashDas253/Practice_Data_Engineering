@@ -1,0 +1,43 @@
+scans:
+
+  application_logs:
+
+    source:
+      type: file
+      path: "./logs/application/*.log"
+
+    discovery:
+      type: glob
+
+    reader:
+      type: text
+
+    parser:
+      modules:
+
+        - type: regex_matcher
+          config:
+            pattern: "(?P<timestamp>\\S+) (?P<level>\\S+) (?P<message>.*)"
+
+        - type: timestamp_normalizer
+          config:
+            field: timestamp
+            input_format: "%Y-%m-%dT%H:%M:%S"
+
+    processing:
+      modules:
+
+        - type: filter
+          config:
+            field: level
+            equals: ERROR
+
+    output:
+      type: duckdb
+      config:
+        path: "./data/logs.duckdb"
+        table: application_errors
+
+    state:
+      enabled: true
+      path: "./state/application_logs.json"

@@ -1,0 +1,28 @@
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+venv/
+.venv/
+env/
+
+# Generated Datasets & Database Files
+examples/data/*.parquet
+examples/data/*.csv
+examples/data/*.json
+examples/data/*.duckdb
+*.duckdb
+
+# Retain directory structure
+!examples/data/.gitkeep
+
+# IDEs & System Files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/

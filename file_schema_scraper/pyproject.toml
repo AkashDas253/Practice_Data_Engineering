@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "file-schema-scraper"
+version = "0.2.0"
+description = "Universal file schema discovery, type sniffing, validation, and multi-file aggregation."
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "click>=8.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0"
+]
+
+[project.scripts]
+file-schema = "file_schema_scraper.cli:cli"
+
+[tool.setuptools.packages.find]
+include = ["file_schema_scraper*"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-v --cov=file_schema_scraper"
+testpaths = ["tests"]
+pythonpath = ["."]
